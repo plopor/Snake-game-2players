@@ -19,16 +19,28 @@ class Snek2{
    pos.x += vel.x*grid;
    pos.y += vel.y*grid;
    if (pos.x > floor((floor(width)-1)/grid)*grid){
-     pos.x = floor((floor(width)-1)/grid)*grid;
+     len = 0;
+        hist = new ArrayList<PVector>();
+   pos.x = floor((floor(width)-1)/grid)*grid;
+   pos.y = 0;
    }
    else if (pos.x < 0){
-     pos.x = 0;
+     len = 0;
+        hist = new ArrayList<PVector>();
+   pos.x = floor((floor(width)-1)/grid)*grid;
+   pos.y = 0;
    }
    if (pos.y > floor((floor(height)-1)/grid)*grid){
-       pos.y = floor((floor(height)-1)/grid)*grid;
+     len = 0;
+          hist = new ArrayList<PVector>();
+   pos.x = floor((floor(width)-1)/grid)*grid;
+   pos.y = 0;
    }
    else if (pos.y < 0){
-       pos.y = 0;
+     len = 0;
+          hist = new ArrayList<PVector>();
+   pos.x = floor((floor(width)-1)/grid)*grid;
+   pos.y = 0;
    }
    if (hist.size() > len){
      hist.remove(0);
@@ -55,6 +67,14 @@ class Snek2{
  void die(){
    for (PVector j : hist){
    if ((pos.x == j.x)&&(pos.y == j.y)){
+   len = 0;
+   hist = new ArrayList<PVector>();
+   pos.x = floor((floor(width)-1)/grid)*grid;
+   pos.y = 0;
+   }
+  }
+   for (PVector l : snek.hist){
+   if ((pos.x == l.x)&&(pos.y == l.y)){
    len = 0;
    hist = new ArrayList<PVector>();
    pos.x = floor((floor(width)-1)/grid)*grid;

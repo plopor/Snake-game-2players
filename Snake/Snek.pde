@@ -19,16 +19,28 @@ class Snek{
    pos.x += vel.x*grid;
    pos.y += vel.y*grid;
    if (pos.x > floor((floor(width)-1)/grid)*grid){
-     pos.x = floor((floor(width)-1)/grid)*grid;
+   len = 0;
+   hist = new ArrayList<PVector>();
+   pos.x = 0;
+   pos.y = 0;
    }
    else if (pos.x < 0){
-     pos.x = 0;
+     len = 0;
+   hist = new ArrayList<PVector>();
+   pos.x = 0;
+   pos.y = 0;
    }
    if (pos.y > floor((floor(height)-1)/grid)*grid){
-       pos.y = floor((floor(height)-1)/grid)*grid;
+     len = 0;
+          hist = new ArrayList<PVector>();
+   pos.x = 0;
+   pos.y = 0;
    }
    else if (pos.y < 0){
-       pos.y = 0;
+     len = 0;
+          hist = new ArrayList<PVector>();
+   pos.x = 0;
+   pos.y = 0;
    }
    if (hist.size() > len){
      hist.remove(0);
@@ -61,37 +73,13 @@ class Snek{
    pos.y = 0;
    }
   }
+  for (PVector l : snek2.hist){
+   if ((pos.x == l.x)&&(pos.y == l.y)){
+   len = 0;
+   hist = new ArrayList<PVector>();
+   pos.x = 0;
+   pos.y = 0;
+   }
+  }
  }
-}
-
-void keyPressed(){
-  if (keyCode == LEFT){
-    snek.vel.x= -1;
-    snek.vel.y= 0;
-  } else if (keyCode == RIGHT){
-    snek.vel.x = 1;
-    snek.vel.y= 0;
-  } 
-  if (keyCode == UP){
-    snek.vel.y = -1;
-    snek.vel.x= 0;
-  } else if (keyCode == DOWN){
-    snek.vel.y = 1;
-    snek.vel.x= 0;
-  }
-  
-    if (keyCode == 'A'){
-    snek2.vel.x= -1;
-    snek2.vel.y= 0;
-  } else if (keyCode == 'D'){
-    snek2.vel.x = 1;
-    snek2.vel.y= 0;
-  } 
-  if (keyCode == 'W'){
-    snek2.vel.y = -1;
-    snek2.vel.x= 0;
-  } else if (keyCode == 'S'){
-    snek2.vel.y = 1;
-    snek2.vel.x= 0;
-  }
 }
