@@ -1,4 +1,4 @@
-int grid = 20;
+int grid = 20, hor1 = 0, ver1 = 0, hor2 = 0, ver2 = 0;
 PVector food;
 Snek snek;
 Snek2 snek2;
@@ -26,32 +26,32 @@ void draw(){
 }
 
 void keyPressed(){
-  if (keyCode == LEFT){
+  if ((keyCode == LEFT) && (snek.vel.x != 1)){
     snek.vel.x= -1;
     snek.vel.y= 0;
-  } else if (keyCode == RIGHT){
+  } else if ((keyCode == RIGHT) && (snek.vel.x != -1)){
     snek.vel.x = 1;
     snek.vel.y= 0;
   } 
-  if (keyCode == UP){
+  if ((keyCode == UP) && (snek.vel.y != 1)){
     snek.vel.y = -1;
     snek.vel.x= 0;
-  } else if (keyCode == DOWN){
+  } else if ((keyCode == DOWN) && (snek.vel.y != -1)){
     snek.vel.y = 1;
     snek.vel.x= 0;
   }
   
-  if (keyCode == 'A'){
+  if ((keyCode == 'A') && (snek2.vel.x != 1)){
     snek2.vel.x= -1;
     snek2.vel.y= 0;
-  } else if (keyCode == 'D'){
+  } else if ((keyCode == 'D') && (snek2.vel.x != -1)){
     snek2.vel.x = 1;
     snek2.vel.y= 0;
   } 
-  if (keyCode == 'W'){
+  if ((keyCode == 'W') && (snek2.vel.y != 1)){
     snek2.vel.y = -1;
     snek2.vel.x= 0;
-  } else if (keyCode == 'S'){
+  } else if ((keyCode == 'S') && (snek2.vel.y != -1)){
     snek2.vel.y = 1;
     snek2.vel.x= 0;
   }

@@ -19,28 +19,36 @@ class Snek{
    pos.x += vel.x*grid;
    pos.y += vel.y*grid;
    if (pos.x > floor((floor(width)-1)/grid)*grid){
-   len = 0;
-   hist = new ArrayList<PVector>();
-   pos.x = 0;
-   pos.y = 0;
+     len = 0;
+     hist = new ArrayList<PVector>();
+     pos.x = 0;
+     pos.y = 0;
+     snek.vel.y = 0;
+     snek.vel.x = 0;
    }
    else if (pos.x < 0){
      len = 0;
-   hist = new ArrayList<PVector>();
-   pos.x = 0;
-   pos.y = 0;
+     hist = new ArrayList<PVector>();
+     pos.x = 0;
+     pos.y = 0;
+     snek.vel.y = 0;
+     snek.vel.x = 0;
    }
    if (pos.y > floor((floor(height)-1)/grid)*grid){
      len = 0;
-          hist = new ArrayList<PVector>();
-   pos.x = 0;
-   pos.y = 0;
+     hist = new ArrayList<PVector>();
+     pos.x = 0;
+     pos.y = 0;
+     snek.vel.y = 0;
+     snek.vel.x = 0;
    }
    else if (pos.y < 0){
      len = 0;
-          hist = new ArrayList<PVector>();
-   pos.x = 0;
-   pos.y = 0;
+     hist = new ArrayList<PVector>();
+     pos.x = 0;
+     pos.y = 0;
+     snek.vel.y = 0;
+     snek.vel.x = 0;
    }
    if (hist.size() > len){
      hist.remove(0);
@@ -66,19 +74,23 @@ class Snek{
  
  void die(){
    for (PVector j : hist){
-   if ((pos.x == j.x)&&(pos.y == j.y)){
-   len = 0;
-   hist = new ArrayList<PVector>();
-   pos.x = 0;
-   pos.y = 0;
-   }
+     if ((pos.x == j.x)&&(pos.y == j.y)){
+       len = 0;
+       hist = new ArrayList<PVector>();
+       pos.x = 0;
+       pos.y = 0;
+       snek.vel.y = 0;
+       snek.vel.x = 0;
+     }
   }
   for (PVector l : snek2.hist){
    if ((pos.x == l.x)&&(pos.y == l.y)){
-   len = 0;
-   hist = new ArrayList<PVector>();
-   pos.x = 0;
-   pos.y = 0;
+     len = 0;
+     hist = new ArrayList<PVector>();
+     pos.x = 0;
+     pos.y = 0;
+     snek.vel.y = 0;
+     snek.vel.x = 0;
    }
   }
  }
