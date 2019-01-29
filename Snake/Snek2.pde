@@ -1,27 +1,11 @@
-class Snek2{
- PVector pos;
- PVector vel;
- ArrayList<PVector> hist;
- int len;
- 
+class Snek2 extends Snek{
  Snek2(){
      pos = new PVector(floor((floor(width)-1)/grid)*grid, 0);
      vel = new PVector(0, 0);
      hist = new ArrayList<PVector>();
      len = 0;
  }
- 
- void update(){
-   // add previous location of snake head to tail
-   hist.add(pos.copy());
-   pos.x += vel.x*grid;
-   pos.y += vel.y*grid;
-   // remove oldest section of snake tail as the head moves, i.e the first in the array
-   if (hist.size() > len){
-     hist.remove(0);
-   }
- }
- 
+ @Override
  void show(){
    noStroke();
    fill(20, 20, 250);
@@ -32,16 +16,7 @@ class Snek2{
     rect (p.x, p.y, grid, grid);
    }
  }
- 
- void eat(){
-   // increase snake tail when it encounters food
-  if ((pos.x == food.x)&&(pos.y == food.y)){
-   len += 1; 
-   // make new food location
-   food = new PVector(floor(floor(random(width))/grid)*grid, floor(floor(random(height))/grid)*grid);
-  }
- }
- 
+ @Override
  void die(){
    // snake death when it encounters its own tail
    for (PVector j : hist){
