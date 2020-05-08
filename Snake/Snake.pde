@@ -1,39 +1,45 @@
+import java.util.Scanner;
+
 int grid = 20, hor1 = 0, ver1 = 0, hor2 = 0, ver2 = 0;
 PVector food;
 long start, timePass;
 Snek snek;
 Snek snek2;
+String option = null;
 
 void setup() {
   size(1200, 700);
   snek = new Snek(1);
   snek2 = new Snek(2);
   food = new PVector(floor(floor(random(width))/grid)*grid, floor(floor(random(height))/grid)*grid);
-  // set low frames to ensure snake moves at a reasonable speed while staying in discrete grid positions
-  // also emulates the classic
-  //frameRate(15);
   start = System.currentTimeMillis();
   timePass = 0;
+  System.out.println("For DFS press 1, for BFS press 2, for Human press 3, for A* press 4.");
 }
 
 void draw() {
   background(0);
-  snek.show();
-  snek2.show();
-  fill(255, 0, 0);
-  rect(food.x, food.y, grid, grid);
-  if (timePass >= 30) {
-    snek.think(snek2, food);
-    food = snek.eat(food);
-    snek.update();
-    snek.die(snek2);
+  if (option != null) {
     snek.show();
-    food = snek2.eat(food);
-    snek2.update();
-    snek2.die(snek);
-    start = System.currentTimeMillis();
+    snek2.show();
+    fill(255, 0, 0);
+    rect(food.x, food.y, grid, grid);
+    if (timePass >= 90) {
+
+      snek.think(snek2, food, option);
+      snek.update();
+      food = snek.eat(food, snek2);
+      //snek.die(snek2);
+      snek.show();
+
+
+      food = snek2.eat(food, snek);
+      snek2.update();
+      snek2.die(snek);
+      start = System.currentTimeMillis();
+    }
+    timePass = System.currentTimeMillis() - start;
   }
-  timePass = System.currentTimeMillis() - start;
 }
 
 void keyPressed() {
@@ -67,5 +73,23 @@ void keyPressed() {
   } else if ((keyCode == 'S') && (snek2.vel.y != -1)) {
     snek2.vel.y = 1;
     snek2.vel.x= 0;
+  }
+  
+  // startup options
+  if (keyCode == '1'){
+    option = "DFS";
+    System.out.println("Switching to DFS");
+  }
+  if (keyCode == '2'){
+    option = "BFS";
+    System.out.println("Switching to BFS");
+  }
+  if (keyCode == '3'){
+    option = "Human";
+    System.out.println("Switching to manual");
+  }
+  if (keyCode == '4'){
+    option = "A*";
+    System.out.println("Switching to A*");
   }
 }
