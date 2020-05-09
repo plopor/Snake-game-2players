@@ -24,9 +24,10 @@ void draw() {
     snek2.show();
     fill(255, 0, 0);
     rect(food.x, food.y, grid, grid);
-    if (timePass >= 90) {
-
-      snek.think(snek2, food, option);
+    if (timePass >= 30) {
+      
+      if (option != "Human")
+        snek.think(snek2, food, option);
       snek.update();
       food = snek.eat(food, snek2);
       //snek.die(snek2);

@@ -23,11 +23,11 @@ class Snek {
     start = pos;
     vel = new PVector(0, 0);
     hist = new ArrayList<PVector>();
-    len = 0;
+    len = 20;
 
 
     //testing
-    first = false;
+    first = true;
   }
 
   void update() {  
@@ -83,14 +83,26 @@ class Snek {
       flattened[(int)occupied.get(i).y * 60 + (int)occupied.get(i).x] = 1;
     }
 
+    //int LOLcounter = 0;
+    //for (int i = 0; i < 35; i++){
+    //  for (int j = 0; j < 60; j++){
+    //    System.out.print(flattened[LOLcounter]);
+    //    LOLcounter++;
+    //  }
+    //  System.out.println();
+    //}
+
     int total = 60 * 35 - occupied.size();
     int placing = int(random(total));
     int counter = 0;
 
-    for (int i = 0; i < placing; i++) {
-      if (flattened[i] == 1)
+    for (counter = 0; counter < (60 * 35); counter++) {
+      if (flattened[counter] == 1) {
         continue;
-      counter++;
+      }
+      if (placing == 0)
+        break;
+      placing--;
     }
 
     toRet.x = (counter % 60) * 20;
@@ -155,7 +167,8 @@ class Snek {
     int startY = (int)(pos.y / 20);
     int endX = (int)(food.x / 20);
     int endY = (int)(food.y / 20);
-    //grid[startX][startY] = -1;
+
+    //grid[startX][startY] = -2;
 
     for (int i = 0; i < other.hist.size(); i++)
       grid[(int)other.hist.get(i).x / 20][(int)other.hist.get(i).y / 20] = -1;
@@ -177,6 +190,8 @@ class Snek {
     if (method == "DFS") {
       Stack<PVector> stack = new Stack<PVector>();
       Stack<PVector> path = new Stack<PVector>();
+      
+      //DFS cannot respond to changes every tick, its path results changes as it follows it
       if (orders.size() == 0 || lastFood.x != food.x || lastFood.y != food.y) {
         lastFood.x = food.x;
         lastFood.y = food.y;
@@ -193,6 +208,8 @@ class Snek {
             //}
             break;
           }
+          
+          //DFS is not responsive enough to avoid dynamic movements including the other player
           if (grid[(int)curr.x][(int)curr.y] == 3 || grid[(int)curr.x][(int)curr.y] == -2) {
             path.pop();
             continue;
@@ -236,57 +253,57 @@ class Snek {
       }
       System.out.println("Orders: " + orders.size());
     } else if (method == "BFS") {
+      orders = new Stack<PVector>();
+
       Queue<PVector> queue = new LinkedList<PVector>();
       Queue<ArrayList<PVector>> pathQ = new LinkedList<ArrayList<PVector>>();
       ArrayList<PVector> path = new ArrayList<PVector>();
       ArrayList<PVector> temp;
-      if (orders.size() == 0 || lastFood.x != food.x || lastFood.y != food.y) {
-        lastFood.x = food.x;
-        lastFood.y = food.y;
-        queue.add(new PVector(startX, startY));
-        path.add(new PVector(startX, startY));
-        pathQ.add(path);
-        while (queue.size() != 0) {
-          PVector curr = queue.remove();
-          path = pathQ.remove();
-          if (grid[(int)curr.x][(int)curr.y] == 1) {
-            for (int i = path.size() - 1; i > 0; i--) {
-              orders.push(path.get(i));
-              //System.out.println(path.get(i));
-            }
-            break;
+
+      queue.add(new PVector(startX, startY));
+      path.add(new PVector(startX, startY));
+      pathQ.add(path);
+      while (queue.size() != 0) {
+        PVector curr = queue.remove();
+        path = pathQ.remove();
+        if (grid[(int)curr.x][(int)curr.y] == 1) {
+          for (int i = path.size() - 1; i > 0; i--) {
+            orders.push(path.get(i));
+            //System.out.println(path.get(i));
           }
-          if (grid[(int)curr.x][(int)curr.y] == 3 || grid[(int)curr.x][(int)curr.y] == -2) {
-            continue;
-          }
-          if ((int)curr.x < 59) {
-            temp = new ArrayList<PVector>(path);
-            temp.add(new PVector(curr.x + 1, curr.y));
-            pathQ.add(temp);
-            queue.add(new PVector(curr.x + 1, curr.y));
-          }
-          if ((int)curr.y < 34) {
-            temp = new ArrayList<PVector>(path);
-            temp.add(new PVector(curr.x, curr.y + 1));
-            pathQ.add(temp);
-            queue.add(new PVector(curr.x, curr.y + 1));
-          }
-          if (curr.x > 0) {
-            temp = new ArrayList<PVector>(path);
-            temp.add(new PVector(curr.x - 1, curr.y));
-            pathQ.add(temp);
-            queue.add(new PVector(curr.x - 1, curr.y));
-          }
-          if (curr.y > 0) {
-            temp = new ArrayList<PVector>(path);
-            temp.add(new PVector(curr.x, curr.y - 1));
-            pathQ.add(temp);
-            queue.add(new PVector(curr.x, curr.y - 1));
-          }
-          grid[(int)curr.x][(int)curr.y] = 3;
+          break;
         }
-        System.out.println("Size: " + orders.size());
+        if (grid[(int)curr.x][(int)curr.y] == 3 || grid[(int)curr.x][(int)curr.y] == -2 || grid[(int)curr.x][(int)curr.y] == -1) {
+          continue;
+        }
+        if ((int)curr.x < 59) {
+          temp = new ArrayList<PVector>(path);
+          temp.add(new PVector(curr.x + 1, curr.y));
+          pathQ.add(temp);
+          queue.add(new PVector(curr.x + 1, curr.y));
+        }
+        if ((int)curr.y < 34) {
+          temp = new ArrayList<PVector>(path);
+          temp.add(new PVector(curr.x, curr.y + 1));
+          pathQ.add(temp);
+          queue.add(new PVector(curr.x, curr.y + 1));
+        }
+        if (curr.x > 0) {
+          temp = new ArrayList<PVector>(path);
+          temp.add(new PVector(curr.x - 1, curr.y));
+          pathQ.add(temp);
+          queue.add(new PVector(curr.x - 1, curr.y));
+        }
+        if (curr.y > 0) {
+          temp = new ArrayList<PVector>(path);
+          temp.add(new PVector(curr.x, curr.y - 1));
+          pathQ.add(temp);
+          queue.add(new PVector(curr.x, curr.y - 1));
+        }
+        grid[(int)curr.x][(int)curr.y] = 3;
       }
+      System.out.println("Size: " + orders.size());
+
       if (orders.size() != 0) {
         //System.out.println("position: " + pos.x / 20 + ", " + pos.y / 20);
         PVector direction = orders.pop();
@@ -307,22 +324,18 @@ class Snek {
           System.out.println("nothing to do");
         }
       }
-      System.out.println("Orders: " + orders.size());
+      System.out.println("Orders remaining: " + orders.size());
     } else if (method == "A*") {
       // Dijkstra's is omitted since it is pretty redundant when all edge costs are the same
       // A* and the heuristic might save some node expansion though, so it's included
+      orders = new Stack<PVector>();
 
       PriorityQueue<ComparablePVec> pQueue = new PriorityQueue<ComparablePVec>();
-      ArrayList<ComparablePVec> completed = new ArrayList<ComparablePVec>();
       PVector goal = new PVector(endX, endY);
       pQueue.add(new ComparablePVec(startX, startY, goal));
-
-      if (orders.size() == 0 || lastFood.x != food.x || lastFood.y != food.y) {
-        lastFood.x = food.x;
-        lastFood.y = food.y;
+ //<>//
         while (pQueue.size() != 0) {
           ComparablePVec curr = pQueue.remove();
-          completed.add(curr);
 
           if (grid[curr.x][curr.y] == 1) {
             while (curr.parent != null) {
@@ -335,17 +348,16 @@ class Snek {
           }
 
           // We can assume that the first time a coord is reached it has the lowest cost, since each single path has same weight and obviously the same coord has same heuristic
-          else if (grid[curr.x][curr.y] == 3 || grid[curr.x][curr.y] == -2) {
-            completed.remove(completed.size() - 1);
+          else if (grid[curr.x][curr.y] == 3 || grid[curr.x][curr.y] == -2 || grid[curr.x][curr.y] == -1) {
             continue;
           }
-          if ((int)curr.x < 59) {
+          if (curr.x < 59) {
             ComparablePVec toAdd = new ComparablePVec(curr.x + 1, curr.y, goal);
             toAdd.z += 1;
             toAdd.parent = curr;
             pQueue.add(toAdd);
           }
-          if ((int)curr.y < 34) {
+          if (curr.y < 34) {
             ComparablePVec toAdd = new ComparablePVec(curr.x, curr.y + 1, goal);
             toAdd.z += 1;
             toAdd.parent = curr;
@@ -363,9 +375,10 @@ class Snek {
             toAdd.parent = curr;
             pQueue.add(toAdd);
           }
+          grid[curr.x][curr.y] = 3;
         }
         System.out.println("Size: " + orders.size());
-      }
+
       if (orders.size() != 0) {
         //System.out.println("position: " + pos.x / 20 + ", " + pos.y / 20);
         PVector direction = orders.pop();
@@ -386,7 +399,7 @@ class Snek {
           System.out.println("nothing to do");
         }
       }
-      System.out.println("Orders: " + orders.size());
+      System.out.println("Orders remaining: " + orders.size());
     }
   }
 
