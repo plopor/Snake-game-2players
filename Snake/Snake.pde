@@ -14,7 +14,7 @@ void setup() {
   food = new PVector(floor(floor(random(width))/grid)*grid, floor(floor(random(height))/grid)*grid);
   start = System.currentTimeMillis();
   timePass = 0;
-  System.out.println("For DFS press 1, for BFS press 2, for Human press 3, for A* press 4.");
+  System.out.println("For DFS press 1, for BFS press 2, for Human press 3, for A* press 4, for unmodified Hamiltonian press 5 (a cycle will be generated first).");
 }
 
 void draw() {
@@ -30,7 +30,7 @@ void draw() {
         snek.think(snek2, food, option);
       snek.update();
       food = snek.eat(food, snek2);
-      //snek.die(snek2);
+      snek.die(snek2);
       snek.show();
 
 
@@ -92,5 +92,9 @@ void keyPressed() {
   if (keyCode == '4'){
     option = "A*";
     System.out.println("Switching to A*");
+  }
+  if (keyCode == '5'){
+    option = "Hamiltonian";
+    System.out.println("Switching to Hamiltonian");
   }
 }
