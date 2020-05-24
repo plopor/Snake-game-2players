@@ -19,28 +19,25 @@ void setup() {
 
 void draw() {
   background(0);
-  if (option != null) {
+  snek.show();
+  snek2.show();
+  fill(255, 0, 0);
+  rect(food.x, food.y, grid, grid);
+  if (timePass >= 30) {
+
+    snek.think(snek2, food);
+    snek.update();
+    food = snek.eat(food, snek2);
+    snek.die(snek2);
     snek.show();
-    snek2.show();
-    fill(255, 0, 0);
-    rect(food.x, food.y, grid, grid);
-    if (timePass >= 30) {
-      
-      if (option != "Human")
-        snek.think(snek2, food, option);
-      snek.update();
-      food = snek.eat(food, snek2);
-      snek.die(snek2);
-      snek.show();
 
 
-      food = snek2.eat(food, snek);
-      snek2.update();
-      snek2.die(snek);
-      start = System.currentTimeMillis();
-    }
-    timePass = System.currentTimeMillis() - start;
+    food = snek2.eat(food, snek);
+    snek2.update();
+    snek2.die(snek);
+    start = System.currentTimeMillis();
   }
+  timePass = System.currentTimeMillis() - start;
 }
 
 void keyPressed() {
@@ -75,26 +72,26 @@ void keyPressed() {
     snek2.vel.y = 1;
     snek2.vel.x= 0;
   }
-  
+
   // startup options
-  if (keyCode == '1'){
-    option = "DFS";
+  if (keyCode == '1') {
+    snek.method = "DFS";
     System.out.println("Switching to DFS");
   }
-  if (keyCode == '2'){
-    option = "BFS";
+  if (keyCode == '2') {
+    snek.method = "BFS";
     System.out.println("Switching to BFS");
   }
-  if (keyCode == '3'){
-    option = "Human";
+  if (keyCode == '3') {
+    snek.method = "Human";
     System.out.println("Switching to manual");
   }
-  if (keyCode == '4'){
-    option = "A*";
+  if (keyCode == '4') {
+    snek.method = "A*";
     System.out.println("Switching to A*");
   }
-  if (keyCode == '5'){
-    option = "Hamiltonian";
+  if (keyCode == '5') {
+    snek.method = "Hamiltonian";
     System.out.println("Switching to Hamiltonian");
   }
 }

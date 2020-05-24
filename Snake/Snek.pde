@@ -14,6 +14,7 @@ class Snek {
   int playerNum;
   boolean runOnce = true;
   Stack<PVector> cycle = new Stack<PVector>();
+  String method;
 
   boolean first;
 
@@ -27,7 +28,7 @@ class Snek {
     vel = new PVector(0, 0);
     hist = new ArrayList<PVector>();
     len = 0;
-
+    method = "Human";
 
     //testing
     first = false;
@@ -98,8 +99,11 @@ class Snek {
     }
   }
 
-  void think(Snek other, PVector food, String method) {
-
+  void think(Snek other, PVector food) {
+    
+    if (method == "Human")
+      return;
+    
     if (this.first) {
       food.x = 200;
       food.y = 0;
